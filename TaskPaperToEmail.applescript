@@ -53,8 +53,8 @@ on proccess_exported_text(exported_text)
 	set exported_text to replace_chars(exported_text, CR, LF)
 	
 	-- Dump export text
-	set the_command_string to "echo " & quoted form of exported_text & " > ~/Desktop/snap.txt"
-	do shell script the_command_string
+	--set the_command_string to "echo " & quoted form of exported_text & " > ~/Desktop/snap.txt"
+	--do shell script the_command_string
 	
 	return exported_text
 	
