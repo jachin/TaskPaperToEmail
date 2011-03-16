@@ -55,8 +55,7 @@ on proccess_exported_text(exported_text)
 	-- Dump export text
 	--set the_command_string to "echo " & quoted form of exported_text & " > ~/Desktop/snap.txt"
 	--do shell script the_command_string
-	
-	return exported_text
+	--return exported_text
 	
 	-- Send the snapshot to a new mail nessage
 	tell application "Mail"
