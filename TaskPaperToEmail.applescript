@@ -107,10 +107,10 @@ print(wrap(msg, 78)).encode('utf-8')"
 	
 	-- Send the snapshot to a new mail nessage
 	tell application "Mail"
-		set newMessage to make new outgoing message with properties {subject:"snapshot", content:exported_text}
+		set newMessage to make new outgoing message with properties {subject:"my subject", content:exported_text}
 		tell newMessage
 			set visible to true
-			make new to recipient at end of to recipients with properties {name:"Clockwork Status", address:"status@clockwork.net"}
+			make new to recipient at end of to recipients with properties {name:"Some Body", address:"who@where.com"}
 		end tell
 	end tell
 	-- Make message plain text
