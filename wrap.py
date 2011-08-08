@@ -2,10 +2,11 @@ import re
 import sys
 
 def wrap(text, width):
-	pattern = re.compile('^([\s\-]+)(.+$)')
+	pattern = re.compile('^([\s\-]*)(.+$)')
 	wrapped_text = ''
 
 	for line in text.split('\n'):
+
 		if len(line) < width:
 			wrapped_text += line + '\n'
 		else:
