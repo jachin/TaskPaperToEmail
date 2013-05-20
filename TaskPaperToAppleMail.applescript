@@ -59,7 +59,7 @@ import sys
 
 def wrap(text, width):
 
-    pattern = re.compile('^([\\s\\-]+)(.+$)')
+    pattern = re.compile('^([\\s\\-]*)(.+$)')
 
     wrapped_text = ''
 
@@ -91,10 +91,13 @@ def wrap(text, width):
 
 msg = sys.stdin.read()
 
-print(wrap(msg, 78)).encode('utf-8')"
+print(wrap(msg, 78)).encode('utf-8')
+"
 	
-	-- set the_command_string to "echo \"" & exported_text & "\" | /usr/bin/env python -c \"" & python_script & "\""
-	-- set exported_text to do shell script the_command_string
+	
+	set the_command_string to "echo \"" & exported_text & "\" | /usr/bin/env python -c \"" & python_script & "\""
+	do shell script the_command_string
+	set exported_text to do shell script the_command_string
 	
 	-- Switch to unix new lines
 	set exported_text to replace_chars(exported_text, CRLF, LF)
