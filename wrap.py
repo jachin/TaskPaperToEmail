@@ -32,6 +32,6 @@ def wrap(text, width):
                 wrapped_text += current_line + '\n'
     return wrapped_text
 
-msg = sys.stdin.read()
-
-print(wrap(msg, 78)).encode('utf-8')
+if __name__ == "__main__":
+    msg = sys.stdin.read()
+    print(wrap(msg, 78)).encode('utf-8')
