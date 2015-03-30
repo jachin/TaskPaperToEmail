@@ -57,49 +57,44 @@ on proccess_exported_text(exported_text)
 import re
 import sys
 
+def wrap(text, width):
 
-def wrap(text, width=78):
+    pattern = re.compile('^([\\s\\-]+)(.+$)')
 
-    pattern = re.compile('^([\s\-]+)(.+$)')
     wrapped_text = ''
 
-    for line in text.split('\n'):
+    for line in text.split('\\n'):
+
         if len(line) < width:
-            wrapped_text += line + '\n'
+            wrapped_text += line + '\\n'
         else:
             m = pattern.match(line)
 
             indent = m.group(1)
             content = m.group(2)
 
-            indent_len = len(indent)
+            indent_len = len( indent )
 
             current_line = indent
 
-            for i, word in enumerate(content.split()):
+            for word in content.split():
                 if len(word) + len(current_line) + 1 > width:
-                    wrapped_text += current_line + '\n'
+                    wrapped_text += current_line + '\\n'
                     current_line = ' ' * indent_len
                     current_line += ' ' + word
                 else:
-                    if i is 0:
-                        current_line += word
-                    else:
-                        current_line += ' ' + word
+                    current_line += ' ' + word
 
             if len(current_line) > 0:
-                wrapped_text += current_line + '\n'
+                wrapped_text += current_line + '\\n'
     return wrapped_text
 
-if __name__ == "__main__":
-    msg = sys.stdin.read()
-    print(wrap(msg, 78)).encode('utf-8')
-"
+msg = sys.stdin.read()
+
+print(wrap(msg, 78)).encode('utf-8')"
 	
-	
-	set the_command_string to "echo \"" & exported_text & "\" | /usr/bin/env python -c \"" & python_script & "\""
-	do shell script the_command_string
-	set exported_text to do shell script the_command_string
+	-- set the_command_string to "echo \"" & exported_text & "\" | /usr/bin/env python -c \"" & python_script & "\""
+	-- set exported_text to do shell script the_command_string
 	
 	-- Switch to unix new lines
 	set exported_text to replace_chars(exported_text, CRLF, LF)
@@ -110,19 +105,12 @@ if __name__ == "__main__":
 	--do shell script the_command_string
 	--return exported_text
 	
-	-- Send the snapshot to a new mail nessage
-	tell application "Mail"
-		set newMessage to make new outgoing message with properties {subject:"my subject", content:exported_text}
-		tell newMessage
-			set visible to true
-			make new to recipient at end of to recipients with properties {name:"Some Body", address:"who@where.com"}
-		end tell
-	end tell
-	-- Make message plain text
-	tell application "System Events"
-		tell application "Mail" to activate
-		keystroke "t" using {command down, shift down}
-	end tell
+	set url_encode_command to "echo \"" & exported_text & "\" | python -c 'import sys,urllib;print urllib.quote(sys.stdin.read().strip())'"
+	set exported_text to do shell script url_encode_command
+	
+	set mailmate_command to "open -a MailMate \"mailto:status@clockwork.net?&subject=snapshot&body=" & exported_text & "\""
+	do shell script mailmate_command
+	
 end proccess_exported_text
 
 on replace_chars(this_text, search_string, replacement_string)
